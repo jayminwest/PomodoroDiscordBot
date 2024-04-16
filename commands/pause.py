@@ -29,18 +29,11 @@ async def pause(ctx):
     """
     try:
         # Check if a task is currently running
-        # if not tasks or ctx.author.id not in timers:
-        #     raise ValueError("No active timer found! Please start a timer first")
+        if ctx.author.id not in timers:
+            raise ValueError("No active timer found! Please start a timer first")
 
         timer = timers[ctx.author.id]
         await timer.pause()
-
-        # update_paused_at(timer.user_id, timer.start_time, datetime.now())
-
-        # Cancel the current task
-        for task in tasks:
-            task.cancel()
-        tasks.clear()
 
         await ctx.send(f"Time tracking paused at {format_datetime(datetime.now())}. To resume, use !resume.")
 

@@ -82,10 +82,6 @@ async def resume(ctx):
         timer = timers[ctx.author.id]
         await timer.resume()
 
-        for task in tasks:
-            task.cancel()
-        tasks.clear()
-
         await ctx.send(f"Time tracking resumed at {format_datetime(datetime.now())}.")
 
     except Exception as e:

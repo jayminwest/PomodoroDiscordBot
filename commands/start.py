@@ -39,5 +39,7 @@ async def start_time_tracking(ctx: discord.ext.commands.Context) -> None:
         await ctx.send(f"Failed to add time tracking row: {str(e)}")
         return
 
+    if ctx.author.id not in tasks:
+        tasks[ctx.author.id] = []
     task = bot.loop.create_task(timer.start())
-    tasks.append(task)
+    tasks[ctx.author.id].append(task)
