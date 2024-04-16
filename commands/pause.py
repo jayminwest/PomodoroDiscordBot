@@ -2,11 +2,12 @@ import discord
 from datetime import datetime
 import asyncio
 from config import supabase
-from utils import add_time_tracking_row, convert_seconds
-from commands import bot, tasks
-from typing import List
-from database.utils import update_time_tracking_row, get_data
+from database.utils import add_time_tracking_row
 from time_tracking.utils import convert_seconds
+from commands import bot, tasks, timers
+from typing import List
+from database.utils import update_time_tracking_row, get_data, update_paused_at
+from time_tracking.utils import convert_seconds, format_datetime
 
 # Command to pause tracking time
 @bot.command(name='pause')
@@ -28,19 +29,20 @@ async def pause(ctx):
     """
     try:
         # Check if a task is currently running
-        if not tasks:
-            raise ValueError("No active timer found! Please start a timer first")
+        # if not tasks or ctx.author.id not in timers:
+        #     raise ValueError("No active timer found! Please start a timer first")
+
+        timer = timers[ctx.author.id]
+        await timer.pause()
+
+        # update_paused_at(timer.user_id, timer.start_time, datetime.now())
 
         # Cancel the current task
         for task in tasks:
             task.cancel()
-        # tasks.clear()
+        tasks.clear()
 
-        # Get the current time
-        time_out = datetime.now()
-
-        # Update the chat with a message indicating that the timer is paused
-        await ctx.send(f"Time tracking paused at {time_out}. To resume, use !resume.")
+        await ctx.send(f"Time tracking paused at {format_datetime(datetime.now())}. To resume, use !resume.")
 
     except Exception as e:
         await ctx.send(f"Error: {str(e)}")

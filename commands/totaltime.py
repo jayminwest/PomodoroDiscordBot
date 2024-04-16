@@ -1,5 +1,6 @@
 from config import supabase
-from utils import convert_seconds
+from database.utils import add_time_tracking_row
+from time_tracking.utils import convert_seconds
 from commands import bot
 from datetime import timedelta, datetime
 from database.utils import get_data

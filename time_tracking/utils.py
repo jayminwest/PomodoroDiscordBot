@@ -2,11 +2,12 @@ import asyncio
 from datetime import datetime, timedelta
 from config import supabase
 
-def convert_seconds(seconds):
+def convert_seconds(total_seconds):
     # Convert seconds to a string in the format HH:MM:SS
-    hours, remainder = divmod(seconds, 3600)
+    hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
-    return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+
+    return "{:02}:{:02}:{:02}".format(int(hours), int(minutes), int(seconds))
 
 async def update_timer(message, time_in):
     # Update the timer in the chat
@@ -43,3 +44,6 @@ async def pomodoro_session(ctx, pomodoro_interval, break_interval):
         await ctx.send("Time to take a break!")
         await asyncio.sleep(break_interval)
         await ctx.send("Time to start working!")
+
+def format_datetime(dt):
+    return dt.strftime("%B %d, %Y at %I:%M %p")

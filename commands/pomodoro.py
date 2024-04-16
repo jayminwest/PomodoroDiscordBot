@@ -1,6 +1,7 @@
 from datetime import datetime
 import asyncio
-from utils import add_time_tracking_row, convert_seconds
+from database.utils import add_time_tracking_row
+from time_tracking.utils import convert_seconds
 from commands import bot, tasks
 from time_tracking.utils import update_countdown
 
